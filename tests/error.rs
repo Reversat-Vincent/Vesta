@@ -1,0 +1,60 @@
+//! Each kind of failure has the expected description and a severity, and a failed start gives a failure exit code.
+
+use std::process::ExitCode;
+
+use vesta::error::{Severity, VestaError, exit_code};
+
+#[test]
+fn each_failure_has_the_expected_description_and_severity() {
+    let parse_error = serde_json::from_str::<u8>("not json").unwrap_err();
+    let corrupt = format!("the settings file settings.json is corrupt: {parse_error}");
+    let cases = [
+        (
+            VestaError::ConfigDirUnavailable,
+            Severity::Fatal,
+            "the system provides no configuration directory",
+        ),
+        (
+            VestaError::Startup("no window".into()),
+            Severity::Fatal,
+            "the application could not start: no window",
+        ),
+        (
+            VestaError::StorageIo {
+                path: "settings.json".into(),
+                source: std::io::Error::other("denied"),
+            },
+            Severity::Recoverable,
+            "cannot access settings.json: denied",
+        ),
+        (
+            VestaError::SettingsCorrupt {
+                path: "settings.json".into(),
+                source: parse_error,
+            },
+            Severity::Recoverable,
+            &corrupt,
+        ),
+        (
+            VestaError::FontUnavailable("Consolas".into()),
+            Severity::Recoverable,
+            "the font \"Consolas\" is unavailable",
+        ),
+        (
+            VestaError::UnsupportedLocale("xx".into()),
+            Severity::Recoverable,
+            "the language \"xx\" is not supported",
+        ),
+    ];
+    for (error, severity, description) in cases {
+        assert_eq!(error.severity(), severity, "{error:?}");
+        assert_eq!(error.to_string(), description, "{error:?}");
+    }
+}
+
+#[test]
+fn exit_code_follows_the_start_outcome() {
+    let failure = VestaError::Startup("no window".into());
+    assert_eq!(exit_code(Ok(())), ExitCode::SUCCESS);
+    assert_eq!(exit_code(Err(failure)), ExitCode::FAILURE);
+}

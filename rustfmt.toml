@@ -1,0 +1,4 @@
+# Stable options only: the pinned stable toolchain must format without nightly.
+edition = "2024"
+max_width = 100
+newline_style = "Unix"

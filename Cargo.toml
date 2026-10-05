@@ -1,0 +1,49 @@
+[package]
+name = "vesta"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.95"
+description = "Vesta is a native desktop super-app in Rust (egui/eframe) for Windows and Linux."
+repository = "https://github.com/Reversat-Vincent/Vesta"
+readme = "README.md"
+keywords = ["gui", "egui", "desktop"]
+categories = ["gui"]
+publish = false
+
+[dependencies]
+# Feature set is provisional; the eframe bootstrap (VESTA-53) finalises it in ADR 0001.
+eframe = { version = "0.36", default-features = false, features = [
+    "accesskit",
+    "default_fonts",
+    "glow",
+    "wayland",
+    "x11",
+] }
+egui = "0.36"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+dirs = "7"
+thiserror = "2"
+log = "0.4"
+
+# Lint policy, documented in CONTRIBUTING.md. clippy.toml allows unwrap/expect/panic in tests.
+[lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+unreachable_pub = "warn"
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+todo = "deny"
+unimplemented = "deny"
+dbg_macro = "deny"
+print_stdout = "warn"
+print_stderr = "warn"
+allow_attributes_without_reason = "warn"
+
+[lints.rustdoc]
+broken_intra_doc_links = "deny"
+missing_crate_level_docs = "warn"

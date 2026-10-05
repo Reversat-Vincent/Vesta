@@ -1,0 +1,5 @@
+# Tests may panic: `unwrap`, `expect` and `panic!` are allowed in `#[test]` functions and
+# `#[cfg(test)]` code. Everywhere else the `[lints.clippy]` table in Cargo.toml denies them.
+allow-unwrap-in-tests = true
+allow-expect-in-tests = true
+allow-panic-in-tests = true
