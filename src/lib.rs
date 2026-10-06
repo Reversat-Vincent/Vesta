@@ -16,6 +16,7 @@
 //! - [`router`]: the page routing enum.
 //! - [`action`]: actions, the action queue and the cross-thread sender.
 //! - [`error`]: typed errors and the crate `Result` alias.
+//! - [`logging`]: the `log` back end and the startup summary.
 //! - [`storage`]: config paths, atomic writes and JSON stores.
 //! - [`settings`]: the versioned user settings model.
 //! - [`i18n`]: locales and FR/EN/JA dictionaries.
@@ -33,6 +34,7 @@ pub mod commands;
 pub mod error;
 pub mod fonts;
 pub mod i18n;
+pub mod logging;
 pub mod pages;
 pub mod platform;
 pub mod router;
@@ -47,17 +49,18 @@ use std::process::ExitCode;
 
 /// Starts Vesta and returns the process exit code.
 ///
-/// A failure that prevents the app from starting is logged and gives a failure exit code
-/// instead of a crash.
+/// The logger is installed first. A failure that prevents the app from starting is logged and
+/// gives a failure exit code instead of a crash.
 #[must_use]
 pub fn run() -> ExitCode {
+    logging::init();
     error::exit_code(start())
 }
 
 /// Starts the app.
 ///
 /// Placeholder: the eframe bootstrap (VESTA-53) will open the main window here.
-#[expect(clippy::unnecessary_wraps, reason = "the real start can fail")]
 fn start() -> error::Result<()> {
+    logging::log_startup(&storage::settings_dir()?);
     Ok(())
 }
