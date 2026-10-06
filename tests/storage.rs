@@ -1,0 +1,21 @@
+//! The settings directory is the `Vesta` folder in the user's configuration directory, and it fails if the system has none.
+
+use std::path::PathBuf;
+
+use vesta::error::VestaError;
+use vesta::storage::settings_dir_in;
+
+#[test]
+fn settings_dir_is_the_vesta_folder_in_the_config_dir() {
+    let config_dir = PathBuf::from("config");
+    let settings_dir = settings_dir_in(Some(config_dir.clone())).unwrap();
+    assert_eq!(settings_dir, config_dir.join("Vesta"));
+}
+
+#[test]
+fn settings_dir_fails_without_a_config_dir() {
+    assert!(matches!(
+        settings_dir_in(None),
+        Err(VestaError::ConfigDirUnavailable)
+    ));
+}

@@ -25,6 +25,13 @@ cargo test             # run the tests
 cargo doc --no-deps --open   # build and open the API documentation
 ```
 
+## Logging
+
+By default Vesta logs a startup summary (version, operating system and settings folder), warnings and errors. Release builds on Windows have no console window, so their log output is not visible.
+Set `RUST_LOG` to see more:
+- In a Linux terminal: `RUST_LOG=debug cargo run`.
+- In PowerShell: `$env:RUST_LOG = "debug"; cargo run`.
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the workflow, the checks to run before pushing, and the lint policy.
