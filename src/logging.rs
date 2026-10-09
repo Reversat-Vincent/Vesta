@@ -12,8 +12,19 @@ use env_logger::{Builder, DEFAULT_FILTER_ENV};
 /// The filter used when `RUST_LOG` is not set.
 const DEFAULT_FILTER: &str = "warn,vesta=info";
 
-/// Returns the logger configuration for `spec`, written in the `RUST_LOG` syntax, or for the
-/// default filter if there is none.
+/// Returns the logger configuration for the filter `spec`, written in the `RUST_LOG` syntax, or
+/// for the default filter if `spec` is `None`.
+///
+/// # Examples
+///
+/// ```
+/// use log::{Level, Log, Metadata};
+/// use vesta::logging;
+///
+/// let debug = Metadata::builder().level(Level::Debug).target("vesta").build();
+/// assert!(!logging::builder(None).build().enabled(&debug));
+/// assert!(logging::builder(Some("debug")).build().enabled(&debug));
+/// ```
 #[must_use]
 pub fn builder(spec: Option<&str>) -> Builder {
     let mut builder = Builder::new();

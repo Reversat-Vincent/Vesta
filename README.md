@@ -17,7 +17,7 @@ Requires Rust 1.95 (pinned by `rust-toolchain.toml`, installed automatically by 
 ```sh
 cargo run                  # build and run
 cargo test                 # run the tests
-cargo doc --no-deps --open # build and open the API documentation
+cargo doc --no-deps --open # build and open the developer documentation
 ```
 
 ## Logging

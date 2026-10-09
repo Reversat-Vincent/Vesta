@@ -60,6 +60,15 @@ Fix the code when you can. Otherwise, suppress the lint on the smallest item pos
 
 - Follow the [Rust API Guidelines checklist](https://rust-lang.github.io/api-guidelines/checklist.html). Reviews look closest at:
   - naming: casing (C-CASE), `as_`/`to_`/`into_` conversions (C-CONV), getters without a `get_` prefix (C-GETTER);
-  - common traits: public types implement `Debug` (C-DEBUG) and, where it makes sense, `Clone`, `Default`, `PartialEq` and `Eq` (C-COMMON-TRAITS);
-  - documentation: crate-level docs (C-CRATE-DOC), examples (C-EXAMPLE), and `# Errors` and `# Panics` sections (C-FAILURE).
+  - common traits: public types implement `Debug` (C-DEBUG) and, where it makes sense, `Clone`, `Default`, `PartialEq` and `Eq` (C-COMMON-TRAITS).
 - Format with `cargo fmt`; rustfmt enforces the [Rust Style Guide](https://doc.rust-lang.org/style-guide/).
+
+## Documentation
+
+The developer documentation is generated from the code by `cargo doc`. It is mainly intended for developers, so it must be clear, understandable and easy to read.
+
+- The crate docs in `src/lib.rs` are the front page: what Vesta is and how its modules fit together, with a link to each top-level module.
+- Every doc comment starts with a one-sentence summary.
+- A public function that returns a `Result` has an `# Errors` section that links each error it returns and says when.
+- A public function that returns a value computed only from its arguments has an `# Examples` section. Examples use `?` rather than `unwrap` and run as tests with `cargo test --doc`.
+- Link to other items with intra-doc links, not URLs.
