@@ -24,6 +24,18 @@ pub fn settings_dir() -> Result<PathBuf> {
 /// # Errors
 ///
 /// Returns [`VestaError::ConfigDirUnavailable`] if `config_dir` is `None`.
+///
+/// # Examples
+///
+/// ```
+/// use std::path::{Path, PathBuf};
+///
+/// use vesta::storage::settings_dir_in;
+///
+/// let dir = settings_dir_in(Some(PathBuf::from("config")))?;
+/// assert_eq!(dir, Path::new("config/Vesta"));
+/// # Ok::<(), vesta::error::VestaError>(())
+/// ```
 pub fn settings_dir_in(config_dir: Option<PathBuf>) -> Result<PathBuf> {
     config_dir
         .map(|dir| dir.join(APP_DIR))

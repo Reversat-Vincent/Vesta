@@ -9,24 +9,11 @@
 //! the app applies them, routes between [`pages`] via [`router`], and persists preferences
 //! through [`storage`] and [`settings`].
 //!
-//! # Modules
-//!
-//! - [`app`]: the `eframe::App` implementation and frame lifecycle.
-//! - [`state`]: domain state and the pure state-transition function.
-//! - [`router`]: the page routing enum.
-//! - [`action`]: actions, the action queue and the cross-thread sender.
-//! - [`error`]: typed errors and the crate `Result` alias.
-//! - [`logging`]: the `log` back end and the startup summary.
-//! - [`storage`]: config paths, atomic writes and JSON stores.
-//! - [`settings`]: the versioned user settings model.
-//! - [`i18n`]: locales and FR/EN/JA dictionaries.
-//! - [`fonts`]: font discovery and the egui font fallback chain.
-//! - [`theme`]: semantic colour tokens and Light/Dark visuals.
-//! - [`toast`]: the toast notification manager and overlay.
-//! - [`commands`]: the command registry, fuzzy search, shortcuts and palette.
-//! - [`shell`]: the activity bar and status bar.
-//! - [`pages`]: one module per route.
-//! - [`platform`]: Windows/Linux specifics.
+//! Around the pages, [`shell`] draws the activity bar and status bar, [`toast`] shows
+//! notifications, and [`commands`] triggers actions from the command palette and keyboard
+//! shortcuts. [`i18n`], [`fonts`] and [`theme`] provide the translations, fonts and colours.
+//! [`error`] defines the expected failures and how each is handled, [`logging`] records
+//! diagnostics, and [`platform`] holds the Windows and Linux specifics.
 
 pub mod action;
 pub mod app;

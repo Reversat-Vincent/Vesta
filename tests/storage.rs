@@ -1,4 +1,4 @@
-//! The settings directory is the `Vesta` folder in the user's configuration directory, and it fails if the system has none.
+//! The settings directory is the `Vesta` folder in the user's configuration directory, and finding it fails if the system has none.
 
 use std::path::PathBuf;
 

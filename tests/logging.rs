@@ -1,5 +1,5 @@
-//! The default log filter is quiet, and `RUST_LOG` switches detail on.
-//! Installing the logger more than once is harmless.
+//! The default log filter is quiet, `RUST_LOG` switches detail on, and installing the logger
+//! more than once is harmless.
 
 use log::{Level, Log, Metadata};
 use vesta::logging::builder;
