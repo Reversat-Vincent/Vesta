@@ -1,0 +1,48 @@
+# Runs the checks listed in CONTRIBUTING.md on Windows and Linux.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+# A new push to a pull request cancels its outdated run; every push to main runs to completion.
+concurrency:
+  group: ${{ github.workflow }}-${{ case(github.event_name == 'pull_request', github.ref, github.run_id) }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  checks:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Install the pinned toolchain
+        run: rustup toolchain install
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+      # Each check runs even if an earlier one failed, so one run reports every failure.
+      - name: Formatting
+        run: cargo fmt --check
+      - name: Code quality
+        if: ${{ !cancelled() }}
+        run: cargo clippy --all-targets --locked -- -D warnings
+      - name: Tests
+        if: ${{ !cancelled() }}
+        run: cargo test --locked
+      - name: Documentation
+        if: ${{ !cancelled() }}
+        run: cargo doc --no-deps
+        env:
+          RUSTDOCFLAGS: -D warnings
