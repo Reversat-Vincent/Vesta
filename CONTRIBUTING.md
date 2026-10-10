@@ -4,13 +4,12 @@ Work is planned in the Linear project ⚶ Vesta (team `VESTA`).
 
 ## Checks
 
-Run these before pushing. They must pass on both Windows and Linux.
+Run these before pushing. They must pass on both Windows and Linux, and CI (`.github/workflows/ci.yml`) runs them on both.
 
 ```sh
 cargo fmt --check
 cargo clippy --all-targets --locked -- -D warnings
-cargo test --all-targets --locked
-cargo test --doc
+cargo test --locked
 RUSTDOCFLAGS="-D warnings" cargo doc --no-deps
 ```
 
